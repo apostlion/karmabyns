@@ -1,0 +1,18 @@
+== Synopsis 
+   Karmabyns, given two arguments, the number of dice to be thrown and the
+   value that is being investigated, will provide the probability of that value
+   being the total of dice being thrown.
+
+== Examples
+   karmabyns 1 6 => 0.166
+   karmabyns 2 4 => 0.083
+
+== Usage 
+   karmabyns number_of_dice value_sought
+
+== Author
+   Gilberto Apostlion
+
+== Copyright
+   Copyright (c) 2009 Gilberto Apostlion. Licensed under the MIT License:
+   http://www.opensource.org/licenses/mit-license.php
