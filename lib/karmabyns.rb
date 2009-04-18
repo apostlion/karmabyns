@@ -99,11 +99,5 @@ class Karmabyns
 end
 
 # Create and run the application
-#app = Karmabyns.new(ARGV)
-#app.run
-
-Benchmark.bmbm do |x|
-  x.report("100") {Karmabyns.new(["100", "100"]).run}
-  x.report("350") {Karmabyns.new(["100", "350"]).run}
-  x.report("600") {Karmabyns.new(["100", "600"]).run}
-end
+app = Karmabyns.new(ARGV)
+app.run
