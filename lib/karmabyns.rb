@@ -70,34 +70,29 @@ class Karmabyns
   # This method calculates probability F of gaining value of k when throwing i
   # dice. Uses exponentiation by squaring for performance boost.
   def f(i, k)
-    if i == 1 && (1..6) === k 
-      1.0/6.0 #Uniform distribution of probability for one die
-    elsif i == 1
-      0 #Out of range value
+    if i == 1
+      k < 7 ? 0.1666666666667 : 0 #Uniform distribution of probability for one die
     elsif @cached_f[i] && @cached_f[i][k]
       @cached_f[i][k] #Using cached value if it exists
     else
       # Using exponentiation by squaring algorithm for determining probability
-      x = i-1
-      y = 1
-      a = (1..k-1).inject(0) do |sum, value| 
-        if (x == 1 && value > 6) || (y == 1 && (k - value) > 6)
-          sum
-        else
-          sum + f(x,value)*f(y, k - value)
+      sum = 0
+      (1..k-1).each do |value| 
+        unless (i < 3 && value > 6) || (k - value) > 6
+          sum = sum + 0.16666667*f(i-1,value)
         end
       end
       # Storing the calculated value in cache
-      if @cached_f[i]
-        @cached_f[i][k] = a
-      else
-        @cached_f[i] ={}
-        @cached_f[i][k] = a  
-      end
+        @cached_f[i] ||= {}
+        @cached_f[i][k] = sum 
     end
   end
 end
 
 # Create and run the application
-app = Karmabyns.new(ARGV)
-app.run
+#app = Karmabyns.new(ARGV)
+#app.run
+
+Benchmark.bm do |x|
+  x.report {Karmabyns.new(["100","150"]).run}
+end
