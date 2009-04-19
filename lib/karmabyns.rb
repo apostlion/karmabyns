@@ -71,16 +71,15 @@ class Karmabyns
   # dice. Uses exponentiation by squaring for performance boost.
   def f(i, k)
     if i == 1
-      k < 7 ? 0.1666666666667 : 0 #Uniform distribution of probability for one die
+      k < 7 ? 0.16666666666666667 : 0 #Uniform distribution of probability for one die
     elsif @cached_f[i] && @cached_f[i][k]
       @cached_f[i][k] #Using cached value if it exists
     else
       # Using exponentiation by squaring algorithm for determining probability
       sum = 0
-      (1..k-1).each do |value| 
-        unless (i < 3 && value > 6) || (k - value) > 6
-          sum = sum + 0.16666667*f(i-1,value)
-        end
+      range = i < 3 ? ([k-6,1].max..[k-1,6].min) : ([k-6,1].max..k-1) 
+      range.each do |value|
+        sum = sum + 0.16666666666666667*f(i-1,value)
       end
       # Storing the calculated value in cache
         @cached_f[i] ||= {}
@@ -90,9 +89,5 @@ class Karmabyns
 end
 
 # Create and run the application
-#app = Karmabyns.new(ARGV)
-#app.run
-
-Benchmark.bm do |x|
-  x.report {Karmabyns.new(["100","150"]).run}
-end
+app = Karmabyns.new(ARGV)
+app.run
